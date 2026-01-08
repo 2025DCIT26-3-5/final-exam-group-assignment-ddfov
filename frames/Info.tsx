@@ -23,18 +23,19 @@ const Info: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleSubmit = () => {
-    if (!username || !password) {
-      Alert.alert("Error", "Please enter both username and password");
-      return;
+  const handleLogin = async () => {
+    try {
+      const response = await fetch("http://YOUR_SERVER_IP:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      if (response.ok) Alert.alert("Success", data.message);
+      else Alert.alert("Error", data.message);
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
     }
-
-    Alert.alert(
-      "Info Submitted",
-      `Username: ${username}\nPassword: ${password}`
-    );
-    // Example: navigate back or to another screen
-    // navigation.navigate("Startup");
   };
 
   return (
@@ -62,7 +63,7 @@ const Info: React.FC<Props> = ({ navigation }) => {
       />
 
       {/* Login Button */}
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 

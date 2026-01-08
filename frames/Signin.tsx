@@ -1,4 +1,4 @@
-// Info.tsx
+// Signin.tsx
 import React, { useState } from "react";
 import {
   View,
@@ -10,16 +10,16 @@ import {
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-// Define the navigation stack params
+// Use the same RootStackParamList
 type RootStackParamList = {
   Startup: undefined;
   Info: undefined;
+  Signin: undefined;
 };
 
-// Type for the props
-type Props = NativeStackScreenProps<RootStackParamList, "Info">;
+type Props = NativeStackScreenProps<RootStackParamList, "Signin">;
 
-const Info: React.FC<Props> = ({ navigation }) => {
+const Signin: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
@@ -30,16 +30,16 @@ const Info: React.FC<Props> = ({ navigation }) => {
     }
 
     Alert.alert(
-      "Info Submitted",
+      "Account Created",
       `Username: ${username}\nPassword: ${password}`
     );
-    // Example: navigate back or to another screen
-    // navigation.navigate("Startup");
+    // Example: navigate back to Login after signup
+    navigation.navigate("Info");
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Start Learning</Text>
+      <Text style={styles.title}>Sign Up</Text>
 
       {/* Username Input */}
       <TextInput
@@ -61,20 +61,15 @@ const Info: React.FC<Props> = ({ navigation }) => {
         secureTextEntry={true}
       />
 
-      {/* Login Button */}
+      {/* Sign Up Button */}
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-
-      {/* Sign In Link */}
-      <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
-        <Text style={styles.signUpText}>Don't have an account? Sign Up</Text>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
-export default Info;
+export default Signin;
 
 const styles = StyleSheet.create({
   container: {
@@ -108,13 +103,5 @@ const styles = StyleSheet.create({
     color: "#20232A",
     fontWeight: "bold",
     fontSize: 16,
-  },
-
-  signUpText: {
-    color: "#61DAFB",
-    textAlign: "center",
-    marginTop: 12,
-    fontSize: 14,
-    textDecorationLine: "underline", // makes it look like a link
   },
 });

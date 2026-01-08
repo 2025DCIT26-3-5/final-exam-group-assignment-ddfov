@@ -1,8 +1,10 @@
+// App.tsx
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Info from "./frames/Info";
+import Signin from "./frames/Signin";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,6 +38,7 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Startup" component={Startup} />
         <Stack.Screen name="Info" component={Info} />
+        <Stack.Screen name="Signin" component={Signin} />
       </Stack.Navigator>
     </NavigationContainer>
   );

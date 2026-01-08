@@ -1,63 +1,70 @@
-import { useState } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Info from "./frames/Info";
 
-// Child Component with Props
-function Greeting({ name }) {
-  return <Text style={styles.greeting}>Kamote, {name}!</Text>;
-}
+const Stack = createNativeStackNavigator();
 
-export default function App() {
-  // State Hook
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState("World");
-
+// STARTUP SCREEN
+function Startup({ navigation }: any) {
   return (
     <View style={styles.container}>
-      {/* Native Feature: Controls phone's status bar */}
-      <StatusBar style="light" backgroundColor="red" />
+      <StatusBar style="light" />
 
-      <Text style={styles.title}>React Native Demo</Text>
-
-      {/* Component with Props */}
-      <Greeting name={name} />
-
-      {/* State Display */}
-      <Text style={styles.counter}>Count: {count}</Text>
-
-      {/* Native Button */}
-      <Button title="Increment" onPress={() => setCount(count + 1)} />
-
-      <Button
-        title="Change Name"
-        onPress={() => setName(name === "World" ? "Student" : "World")}
+      {/* Replace text logo with image */}
+      <Image
+        source={require("./images/Logo.png")}
+        style={styles.logoImage}
+        resizeMode="contain"
       />
+
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.navigate("Info")}
+      >
+        <Text style={styles.buttonText}>Continue</Text>
+      </Pressable>
     </View>
   );
 }
 
-// StyleSheet (like CSS but for React Native)
+// APP ENTRY POINT
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Startup" component={Startup} />
+        <Stack.Screen name="Info" component={Info} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+// STYLES
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#cbd4e6ff",
+    backgroundColor: "#20232A",
     alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
+  logoImage: {
+    width: 500, // adjust as needed
+    height: 500, // adjust as needed
     marginBottom: 20,
   },
-  greeting: {
-    fontSize: 32,
-    color: "#ec261cff",
-    marginBottom: 10,
+  button: {
+    position: "absolute",
+    bottom: 60,
+    backgroundColor: "#61DAFB",
+    paddingVertical: 14,
+    paddingHorizontal: 70,
+    borderRadius: 30,
   },
-  counter: {
+  buttonText: {
+    color: "#FFFFFF",
     fontSize: 16,
-    color: "white",
-    marginVertical: 20,
+    fontWeight: "bold",
   },
 });

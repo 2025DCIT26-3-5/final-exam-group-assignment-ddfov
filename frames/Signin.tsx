@@ -25,7 +25,7 @@ const Signin: React.FC<Props> = ({ navigation }) => {
 
   const handleSubmit = () => {
     if (!username || !password) {
-      Alert.alert("Error", "Please enter both username and password");
+      Alert.alert("Error", "Please enter both Username and Password");
       return;
     }
 

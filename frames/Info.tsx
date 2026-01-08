@@ -25,35 +25,45 @@ const Info: React.FC<Props> = ({ navigation }) => {
   // API
   const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
 
-  const handleLogin = async () => {
-    if (!username || !password) {
-      Alert.alert("Error", "Please enter both username and password");
-      return;
+const handleLogin = async () => {
+  if (!username || !password) {
+    Alert.alert("Error", "Please enter both username and password");
+    return;
+  }
+
+  try {
+    // Send POST request to /login
+    const response = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      Alert.alert(
+        "Success",
+        data.message,
+        [
+          {
+            text: "OK",
+            onPress: () => navigation.navigate("Dashboard", { userId: data.userId }),
+          },
+        ]
+      );
+
+      setUsername("");
+      setPassword("");
+
+      navigation.navigate("Dashboard", { userId: data.userId });
+    } else {
+      Alert.alert("Error", data.message);
     }
-
-    try {
-      // Send POST request to /login
-      const response = await fetch(`${API_URL}/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        Alert.alert("Success", data.message);
-        setUsername("");
-        setPassword("");
-        // Navigate wherever you want after login
-        // navigation.navigate("Startup");
-      } else {
-        Alert.alert("Error", data.message);
-      }
-    } catch (error: any) {
-      Alert.alert("Error", error.message);
-    }
-  };
+  } catch (error: any) {
+    Alert.alert("Error", error.message);
+  }
+};
 
   return (
     <View style={styles.container}>

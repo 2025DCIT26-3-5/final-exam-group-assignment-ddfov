@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-// Use the same RootStackParamList
+// Define navigation stack
 type RootStackParamList = {
   Startup: undefined;
   Info: undefined;
@@ -23,18 +23,36 @@ const Signin: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleSubmit = () => {
+  // API
+  const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
+
+  const handleSubmit = async () => {
     if (!username || !password) {
-      Alert.alert("Error", "Please enter both Username and Password");
+      Alert.alert("Error", "Please enter both username and password");
       return;
     }
 
-    Alert.alert(
-      "Account Created",
-      `Username: ${username}\nPassword: ${password}`
-    );
-    // Example: navigate back to Login after signup
-    navigation.navigate("Info");
+    try {
+      // Send POST request to /signup
+      const response = await fetch(`${API_URL}/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        Alert.alert("Success", data.message);
+        setUsername("");
+        setPassword("");
+        navigation.navigate("Info"); // go to login screen
+      } else {
+        Alert.alert("Error", data.message);
+      }
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    }
   };
 
   return (
@@ -58,7 +76,7 @@ const Signin: React.FC<Props> = ({ navigation }) => {
         placeholderTextColor="#888"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry={true}
+        secureTextEntry
       />
 
       {/* Sign Up Button */}

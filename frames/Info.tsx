@@ -10,29 +10,46 @@ import {
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-// Define the navigation stack params
+// Define the navigation stack
 type RootStackParamList = {
   Startup: undefined;
   Info: undefined;
+  Signin: undefined;
 };
 
-// Type for the props
 type Props = NativeStackScreenProps<RootStackParamList, "Info">;
 
 const Info: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  // API
+  const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
 
   const handleLogin = async () => {
+    if (!username || !password) {
+      Alert.alert("Error", "Please enter both username and password");
+      return;
+    }
+
     try {
-      const response = await fetch("http://YOUR_SERVER_IP:3000/login", {
+      // Send POST request to /login
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
       });
+
       const data = await response.json();
-      if (response.ok) Alert.alert("Success", data.message);
-      else Alert.alert("Error", data.message);
+
+      if (response.ok) {
+        Alert.alert("Success", data.message);
+        setUsername("");
+        setPassword("");
+        // Navigate wherever you want after login
+        // navigation.navigate("Startup");
+      } else {
+        Alert.alert("Error", data.message);
+      }
     } catch (error: any) {
       Alert.alert("Error", error.message);
     }
@@ -59,7 +76,7 @@ const Info: React.FC<Props> = ({ navigation }) => {
         placeholderTextColor="#888"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry={true}
+        secureTextEntry
       />
 
       {/* Login Button */}
@@ -67,7 +84,7 @@ const Info: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
-      {/* Sign In Link */}
+      {/* Sign Up Link */}
       <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
         <Text style={styles.signUpText}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>
@@ -110,12 +127,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
-
   signUpText: {
     color: "#61DAFB",
     textAlign: "center",
     marginTop: 12,
     fontSize: 14,
-    textDecorationLine: "underline", // makes it look like a link
+    textDecorationLine: "underline",
   },
 });

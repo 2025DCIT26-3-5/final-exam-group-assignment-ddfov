@@ -71,7 +71,7 @@ const Lesson_4 = ({ route, navigation }: any) => {
       const res = await fetch(`${API_URL}/progress/complete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, lesson_order: 1 }),
+        body: JSON.stringify({ userId, lesson_order: 4 }),
       });
       const data = await res.json();
       if (res.ok) {

@@ -1,4 +1,4 @@
-// Lesson_3.tsx
+// Lesson_5.tsx
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from "react-native";
 

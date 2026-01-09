@@ -144,6 +144,31 @@ app.get("/dashboard/:userId", async (req, res) => {
   }
 });
 
+// Mark lesson as completed
+app.post("/progress/complete", async (req, res) => {
+  const { userId, lesson_order } = req.body;
+
+  if (!userId || !lesson_order) {
+    return res.status(400).json({ message: "Missing parameters" });
+  }
+
+  try {
+    // Get course ID by lesson_order
+    const courseRes = await pool.query("SELECT id FROM courses WHERE lesson_order = $1", [lesson_order]);
+    if (courseRes.rows.length === 0) return res.status(404).json({ message: "Course not found" });
+
+    const courseId = courseRes.rows[0].id;
+
+    // Update progress
+    await pool.query("UPDATE progress SET completed = true WHERE user_id = $1 AND course_id = $2", [userId, courseId]);
+
+    res.json({ message: "Progress updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 // Run 3000 PORT
 const PORT = process.env.PORT || 3000;
 // Listen on 0.0.0.0 so other devices (or Codespace public URL) can reach it

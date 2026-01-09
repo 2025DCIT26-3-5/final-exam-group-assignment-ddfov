@@ -1,5 +1,5 @@
 // Dashboard.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,9 @@ import {
   Image,
 } from "react-native";
 
-const API_URL =
-  "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
+const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
 
+// ICONS
 const ICON_CHECKED = require("../images/Checked.png");
 const ICON_UNLOCK = require("../images/Unlock.png");
 const ICON_LOCK = require("../images/Lock.png");
@@ -22,24 +22,24 @@ const Dashboard = ({ navigation, route }: any) => {
   const [lessons, setLessons] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadDashboard = async () => {
-      try {
-        const res = await fetch(`${API_URL}/dashboard/${userId}`);
-        const data = await res.json();
-
-        if (Array.isArray(data)) setLessons(data);
-        else setLessons([]);
-      } catch (err) {
-        console.error(err);
-        setLessons([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadDashboard();
+  const loadDashboard = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/dashboard/${userId}`);
+      const data = await res.json();
+      if (Array.isArray(data)) setLessons(data);
+      else setLessons([]);
+    } catch (err) {
+      console.error("Dashboard fetch failed:", err);
+      setLessons([]);
+    } finally {
+      setLoading(false);
+    }
   }, [userId]);
+
+  useEffect(() => {
+    loadDashboard();
+  }, [loadDashboard]);
 
   if (loading) {
     return (
@@ -67,7 +67,12 @@ const Dashboard = ({ navigation, route }: any) => {
             key={lesson.id}
             disabled={!lesson.unlocked}
             style={[styles.card, !lesson.unlocked && styles.locked]}
-            onPress={() => navigation.navigate(screenName, { userId })}
+            onPress={() =>
+              navigation.navigate(screenName, {
+                userId,
+                onComplete: loadDashboard, // <-- pass callback to refresh progress
+              })
+            }
           >
             <Image source={icon} style={styles.icon} />
             <Text style={styles.cardText}>{lesson.title}</Text>
@@ -82,21 +87,8 @@ export default Dashboard;
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#20232A", padding: 20 },
-  title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "#61DAFB",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  card: {
-    backgroundColor: "#2C2F36",
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 12,
-    flexDirection: "row",
-    alignItems: "center",
-  },
+  title: { fontSize: 26, fontWeight: "bold", color: "#61DAFB", marginBottom: 20, textAlign: "center" },
+  card: { backgroundColor: "#2C2F36", padding: 16, borderRadius: 10, marginBottom: 12, flexDirection: "row", alignItems: "center" },
   locked: { opacity: 0.4 },
   icon: { width: 24, height: 24, marginRight: 12, resizeMode: "contain" },
   cardText: { color: "#fff", fontSize: 16, fontWeight: "bold" },

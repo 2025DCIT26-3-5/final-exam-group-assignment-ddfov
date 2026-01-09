@@ -1,8 +1,16 @@
 // Lesson_4.tsx
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+} from "react-native";
 
-const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
+const API_URL =
+  "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
 
 type Question = {
   type: "fill-in" | "multiple-choice" | "true-false" | "lesson";
@@ -17,35 +25,84 @@ const Lesson_4 = ({ route, navigation }: any) => {
 
   const questions: Question[] = [
     {
-      type: "fill-in",
-      question: "Complete the StyleSheet:",
+      type: "lesson",
+      question: `Styling Without CSS
+
+React Native styles are written using JavaScript objects.
+These styles control layout, spacing, color, and alignment.`,
+    },
+    {
+      type: "lesson",
+      question: `Flexbox in React Native
+
+Flexbox is the layout system used to position components.
+It controls direction, alignment, and spacing of elements.`,
+    },
+    {
+      type: "multiple-choice",
+      question:
+        "A container displays its children side by side. Which flexbox property value caused this layout?",
       snippet: "container: {\n  flexDirection: ___\n}",
       options: ["row", "column", "row-reverse", "column-reverse"],
       correctAnswer: "row",
     },
     {
-      type: "multiple-choice",
-      question: "Which best describes a React Native component?",
-      options: ["A database reusable", "A reusable UI element", "A CSS file", "A backend function"],
-      correctAnswer: "A reusable UI element",
-    },
-    {
       type: "true-false",
-      question: "React Native uses JavaScript as its programming language.",
+      question:
+        "When flexDirection is not specified, components are stacked vertically.",
       options: ["True", "False"],
       correctAnswer: "True",
     },
     {
       type: "lesson",
-      question: `You know that React Native can perform operations directly inside components, 
-      such as updating numbers or text when a button is pressed. However, putting all the logic 
-      directly in the UI can make the code harder to read and manage.`,
+      question: `Flexbox Axes
+
+Flexbox layouts use two axes:
+• Main axis – defined by flexDirection
+• Cross axis – perpendicular to the main axis`,
+    },
+    {
+      type: "multiple-choice",
+      question: "Which flexDirection value uses a vertical main axis?",
+      options: ["column", "row", "row-reverse", "column-reverse"],
+      correctAnswer: "column",
+    },
+    {
+      type: "lesson",
+      question: `Spacing with Padding and Margin
+
+Padding adds space inside a component.
+Margin adds space outside a component.`,
+    },
+    {
+      type: "true-false",
+      question: "Padding controls the space inside a component’s border.",
+      options: ["True", "False"],
+      correctAnswer: "True",
+    },
+    {
+      type: "lesson",
+      question: `Aligning Items in Flexbox
+
+Flexbox provides alignment using:
+• justifyContent for the main axis
+• alignItems for the cross axis`,
+    },
+    {
+      type: "fill-in",
+      question: "Complete the style rule to add inner spacing to a container:",
+      snippet:
+        "const styles = StyleSheet.create({\n  container: {\n    ___: 20,\n  }\n});",
+      options: ["padding", "margin", "paddingHorizontal", "paddingVertical"],
+      correctAnswer: "padding",
     },
   ];
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<"none" | "correct" | "wrong">("none");
+  const [feedback, setFeedback] = useState<"none" | "correct" | "wrong">(
+    "none"
+  );
   const [hearts, setHearts] = useState(5);
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -55,9 +112,9 @@ const Lesson_4 = ({ route, navigation }: any) => {
       const res = await fetch(`${API_URL}/progress/complete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           userId: Number(userId),
-          lesson_order: 4
+          lesson_order: 4,
         }),
       });
       const data = await res.json();
@@ -75,7 +132,9 @@ const Lesson_4 = ({ route, navigation }: any) => {
 
   const handleCheck = () => {
     if (!selected) return;
-    setFeedback(selected === currentQuestion.correctAnswer ? "correct" : "wrong");
+    setFeedback(
+      selected === currentQuestion.correctAnswer ? "correct" : "wrong"
+    );
   };
 
   const handleNext = () => {
@@ -116,8 +175,12 @@ const Lesson_4 = ({ route, navigation }: any) => {
                 style={[
                   styles.optionButton,
                   selected === opt && styles.selectedOption,
-                  feedback === "correct" && opt === currentQuestion.correctAnswer && styles.correctOption,
-                  feedback === "wrong" && selected === opt && styles.wrongOption,
+                  feedback === "correct" &&
+                    opt === currentQuestion.correctAnswer &&
+                    styles.correctOption,
+                  feedback === "wrong" &&
+                    selected === opt &&
+                    styles.wrongOption,
                 ]}
                 onPress={() => feedback === "none" && setSelected(opt)}
               >
@@ -128,7 +191,8 @@ const Lesson_4 = ({ route, navigation }: any) => {
         </>
       )}
 
-      {(currentQuestion.type === "multiple-choice" || currentQuestion.type === "true-false") && (
+      {(currentQuestion.type === "multiple-choice" ||
+        currentQuestion.type === "true-false") && (
         <View style={styles.options}>
           {currentQuestion.options?.map((opt) => (
             <TouchableOpacity
@@ -136,7 +200,9 @@ const Lesson_4 = ({ route, navigation }: any) => {
               style={[
                 styles.optionButton,
                 selected === opt && styles.selectedOption,
-                feedback === "correct" && opt === currentQuestion.correctAnswer && styles.correctOption,
+                feedback === "correct" &&
+                  opt === currentQuestion.correctAnswer &&
+                  styles.correctOption,
                 feedback === "wrong" && selected === opt && styles.wrongOption,
               ]}
               onPress={() => feedback === "none" && setSelected(opt)}
@@ -158,9 +224,14 @@ const Lesson_4 = ({ route, navigation }: any) => {
       )}
 
       {feedback === "correct" && (
-        <TouchableOpacity style={[styles.checkButton, styles.correctButton]} onPress={handleNext}>
+        <TouchableOpacity
+          style={[styles.checkButton, styles.correctButton]}
+          onPress={handleNext}
+        >
           <Text style={styles.checkText}>
-            {currentQuestionIndex < questions.length - 1 ? "Next Question" : "Finish Lesson"}
+            {currentQuestionIndex < questions.length - 1
+              ? "Next Question"
+              : "Finish Lesson"}
           </Text>
         </TouchableOpacity>
       )}
@@ -171,17 +242,21 @@ const Lesson_4 = ({ route, navigation }: any) => {
           onPress={() => {
             const newHearts = hearts - 1;
             if (newHearts <= 0) {
-              Alert.alert("Out of hearts!", "You reached 0 hearts. Restarting the lesson.", [
-                {
-                  text: "OK",
-                  onPress: () => {
-                    setCurrentQuestionIndex(0);
-                    setSelected(null);
-                    setFeedback("none");
-                    setHearts(5); // reset hearts
+              Alert.alert(
+                "Out of hearts!",
+                "You reached 0 hearts. Restarting the lesson.",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      setCurrentQuestionIndex(0);
+                      setSelected(null);
+                      setFeedback("none");
+                      setHearts(5); // reset hearts
+                    },
                   },
-                },
-              ]);
+                ]
+              );
             } else {
               setHearts(newHearts);
               setFeedback("none");
@@ -199,19 +274,60 @@ const Lesson_4 = ({ route, navigation }: any) => {
 export default Lesson_4;
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, backgroundColor: "#20232A", padding: 20, alignItems: "center", justifyContent: "center" },
+  container: {
+    flexGrow: 1,
+    backgroundColor: "#20232A",
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   heart: { fontSize: 20, marginBottom: 10 },
-  question: { color: "#fff", fontSize: 18, marginBottom: 20, fontWeight: "bold", textAlign: "center" },
-  snippetBox: { backgroundColor: "#fff", width: "100%", padding: 16, borderRadius: 10, marginBottom: 20 },
+  question: {
+    color: "#fff",
+    fontSize: 18,
+    marginBottom: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  snippetBox: {
+    backgroundColor: "#fff",
+    width: "100%",
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
   snippet: { fontFamily: "monospace", fontSize: 16, color: "#000" },
-  blank: { backgroundColor: "#eee", paddingHorizontal: 4, borderRadius: 4, fontWeight: "bold" },
-  options: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 10, marginBottom: 20 },
-  optionButton: { backgroundColor: "#2C2F36", padding: 12, borderRadius: 8, margin: 5 },
+  blank: {
+    backgroundColor: "#eee",
+    paddingHorizontal: 4,
+    borderRadius: 4,
+    fontWeight: "bold",
+  },
+  options: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 10,
+    marginBottom: 20,
+  },
+  optionButton: {
+    backgroundColor: "#2C2F36",
+    padding: 12,
+    borderRadius: 8,
+    margin: 5,
+  },
   selectedOption: { borderWidth: 2, borderColor: "#61DAFB" },
   correctOption: { backgroundColor: "green" },
   wrongOption: { backgroundColor: "red" },
   optionText: { color: "#fff", fontWeight: "bold" },
-  checkButton: { backgroundColor: "#61DAFB", padding: 14, borderRadius: 10, width: "50%", alignItems: "center", marginBottom: 10 },
+  checkButton: {
+    backgroundColor: "#61DAFB",
+    padding: 14,
+    borderRadius: 10,
+    width: "50%",
+    alignItems: "center",
+    marginBottom: 10,
+  },
   checkText: { color: "#20232A", fontWeight: "bold" },
   disabledButton: { opacity: 0.5 },
   correctButton: { backgroundColor: "green" },

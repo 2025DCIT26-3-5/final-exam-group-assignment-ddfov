@@ -1,11 +1,18 @@
 // App.tsx
+import React from "react";
 import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import Info from "./frames/Info";
 import Signin from "./frames/Signin";
 import Dashboard from "./frames/Dashboard";
+
+// Lesson screens
+import Lesson_1 from "./frames/Lesson_1";
+import Lesson_2 from "./frames/Lesson_2";
+import Lesson_3 from "./frames/Lesson_3";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,13 +21,11 @@ function Startup({ navigation }: any) {
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
-
       <Image
         source={require("./images/Logo.png")}
         style={styles.logoImage}
         resizeMode="contain"
       />
-
       <Pressable
         style={styles.button}
         onPress={() => navigation.navigate("Info")}
@@ -40,6 +45,9 @@ export default function App() {
         <Stack.Screen name="Info" component={Info} />
         <Stack.Screen name="Signin" component={Signin} />
         <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="Lesson_1" component={Lesson_1} />
+        <Stack.Screen name="Lesson_2" component={Lesson_2} />
+        <Stack.Screen name="Lesson_3" component={Lesson_3} />
       </Stack.Navigator>
     </NavigationContainer>
   );

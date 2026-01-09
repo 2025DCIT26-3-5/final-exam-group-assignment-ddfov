@@ -10,11 +10,10 @@ import {
 } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-// Define the navigation stack
 type RootStackParamList = {
-  Startup: undefined;
   Info: undefined;
   Signin: undefined;
+  Dashboard: { userId: number };
 };
 
 type Props = NativeStackScreenProps<RootStackParamList, "Info">;
@@ -22,54 +21,39 @@ type Props = NativeStackScreenProps<RootStackParamList, "Info">;
 const Info: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  // API
-  const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
+  const API_URL =
+    "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
 
-const handleLogin = async () => {
-  if (!username || !password) {
-    Alert.alert("Error", "Please enter both username and password");
-    return;
-  }
-
-  try {
-    // Send POST request to /login
-    const response = await fetch(`${API_URL}/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      Alert.alert(
-        "Success",
-        data.message,
-        [
-          {
-            text: "OK",
-            onPress: () => navigation.navigate("Dashboard", { userId: data.userId }),
-          },
-        ]
-      );
-
-      setUsername("");
-      setPassword("");
-
-      navigation.navigate("Dashboard", { userId: data.userId });
-    } else {
-      Alert.alert("Error", data.message);
+  const handleLogin = async () => {
+    if (!username || !password) {
+      Alert.alert("Error", "Please enter both username and password");
+      return;
     }
-  } catch (error: any) {
-    Alert.alert("Error", error.message);
-  }
-};
+
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Navigate to Dashboard and pass userId
+        navigation.replace("Dashboard", { userId: data.userId });
+      } else {
+        Alert.alert("Error", data.message);
+      }
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Start Learning</Text>
 
-      {/* Username Input */}
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -79,7 +63,6 @@ const handleLogin = async () => {
         autoCapitalize="none"
       />
 
-      {/* Password Input */}
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -89,12 +72,10 @@ const handleLogin = async () => {
         secureTextEntry
       />
 
-      {/* Login Button */}
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
-      {/* Sign Up Link */}
       <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
         <Text style={styles.signUpText}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>

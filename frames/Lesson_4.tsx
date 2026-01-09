@@ -1,4 +1,4 @@
-// Lesson_1.tsx
+// Lesson_4.tsx
 import React, { useState } from "react";
 import {
   View,
@@ -21,7 +21,7 @@ type Question = {
   correctAnswer?: string;
 };
 
-const Lesson_1 = ({ route, navigation }: any) => {
+const Lesson_4 = ({ route, navigation }: any) => {
   const { userId, onComplete } = route.params;
 
   const questions: Question[] = [
@@ -212,7 +212,7 @@ const Lesson_1 = ({ route, navigation }: any) => {
   );
 };
 
-export default Lesson_1;
+export default Lesson_4;
 
 const styles = StyleSheet.create({
   container: {

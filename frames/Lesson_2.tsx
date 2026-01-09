@@ -46,6 +46,7 @@ const Lesson_2 = ({ route, navigation }: any) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<"none" | "correct" | "wrong">("none");
+  const [hearts, setHearts] = useState(5);
 
   const currentQuestion = questions[currentQuestionIndex];
 
@@ -90,7 +91,7 @@ const Lesson_2 = ({ route, navigation }: any) => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.heart}>❤️ 5</Text>
+      <Text style={styles.heart}>❤️ {hearts}</Text>
       <Text style={styles.question}>{currentQuestion.question}</Text>
 
       {currentQuestion.type === "lesson" && (
@@ -165,7 +166,29 @@ const Lesson_2 = ({ route, navigation }: any) => {
       )}
 
       {feedback === "wrong" && (
-        <TouchableOpacity style={[styles.checkButton, styles.wrongButton]} onPress={() => setFeedback("none")}>
+        <TouchableOpacity
+          style={[styles.checkButton, styles.wrongButton]}
+          onPress={() => {
+            const newHearts = hearts - 1;
+            if (newHearts <= 0) {
+              Alert.alert("Out of hearts!", "You reached 0 hearts. Restarting the lesson.", [
+                {
+                  text: "OK",
+                  onPress: () => {
+                    setCurrentQuestionIndex(0);
+                    setSelected(null);
+                    setFeedback("none");
+                    setHearts(5); // reset hearts
+                  },
+                },
+              ]);
+            } else {
+              setHearts(newHearts);
+              setFeedback("none");
+              setSelected(null);
+            }
+          }}
+        >
           <Text style={styles.checkText}>Try Again</Text>
         </TouchableOpacity>
       )}

@@ -15,7 +15,6 @@ function Startup({ navigation }: any) {
     <View style={styles.container}>
       <StatusBar style="light" />
 
-      {/* Replace text logo with image */}
       <Image
         source={require("./images/Logo.png")}
         style={styles.logoImage}
@@ -55,8 +54,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logoImage: {
-    width: 500, // adjust as needed
-    height: 500, // adjust as needed
+    width: 500,
+    height: 500,
     marginBottom: 20,
   },
   button: {

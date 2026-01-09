@@ -5,38 +5,53 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  FlatList,
   ActivityIndicator,
+  Image,
 } from "react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type RootStackParamList = {
-  Dashboard: { userId: number };
-};
+const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
 
-type Props = NativeStackScreenProps<RootStackParamList, "Dashboard">;
+// ICONS
+const ICON_CHECKED = require("../images/Checked.png");
+const ICON_UNLOCK = require("../images/Unlock.png");
+const ICON_LOCK = require("../images/Lock.png");
 
-const Dashboard: React.FC<Props> = ({ route }) => {
+const Dashboard = ({ route }: any) => {
   const { userId } = route.params;
+
+  // Start as array
   const [lessons, setLessons] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  // API
-  const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
 
   useEffect(() => {
-    fetch(`${API_URL}/dashboard/${userId}`)
-    .then((res) => res.json())
-    .then((data) => {
-      setLessons(data);
-      setLoading(false);
-    })
-    .catch(() => setLoading(false));
+    const loadDashboard = async () => {
+      try {
+        const res = await fetch(`${API_URL}/dashboard/${userId}`);
+        const data = await res.json();
+
+        console.log("DASHBOARD DATA:", data);
+
+        // SAFETY CHECK
+        if (Array.isArray(data)) {
+          setLessons(data);
+        } else {
+          setLessons([]);
+        }
+      } catch (err) {
+        console.error("Dashboard fetch failed:", err);
+        setLessons([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDashboard();
   }, [userId]);
 
   if (loading) {
     return (
       <View style={styles.center}>
-        <ActivityIndicator size="large" color="#61DAFB" />
+        <ActivityIndicator size="large" />
       </View>
     );
   }
@@ -45,26 +60,32 @@ const Dashboard: React.FC<Props> = ({ route }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Your Courses</Text>
 
-      <FlatList
-        data={lessons}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => {
-          let icon = "🔒";
-          if (item.completed) icon = "✅";
-          else if (item.unlocked) icon = "➡️";
+      {/* EMPTY STATE */}
+      {lessons.length === 0 && (
+        <Text style={styles.empty}>No courses found</Text>
+      )}
 
-          return (
-            <TouchableOpacity
-              disabled={!item.unlocked}
-              style={[styles.card, !item.unlocked && styles.locked]}
-            >
-              <Text style={styles.cardText}>
-                {icon} Lesson {item.lesson_order}
-              </Text>
-            </TouchableOpacity>
-          );
-        }}
-      />
+      {/* COURSE LIST */}
+      {lessons.map((lesson: any) => {
+        let icon = ICON_LOCK;
+
+        if (lesson.completed) icon = ICON_CHECKED;
+        else if (lesson.unlocked) icon = ICON_UNLOCK;
+
+        return (
+          <TouchableOpacity
+            key={lesson.id}
+            disabled={!lesson.unlocked}
+            style={[
+              styles.card,
+              !lesson.unlocked && styles.locked,
+            ]}
+          >
+            <Image source={icon} style={styles.icon} />
+            <Text style={styles.cardText}>{lesson.title}</Text>
+          </TouchableOpacity>
+        );
+      })}
     </View>
   );
 };
@@ -83,20 +104,33 @@ const styles = StyleSheet.create({
     color: "#61DAFB",
     marginBottom: 20,
     textAlign: "center",
-    padding: 50,
   },
   card: {
     backgroundColor: "#2C2F36",
-    padding: 18,
+    padding: 16,
     borderRadius: 10,
     marginBottom: 12,
+    flexDirection: "row",
+    alignItems: "center",
   },
   locked: {
     opacity: 0.4,
   },
+  icon: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
+    resizeMode: "contain",
+  },
   cardText: {
     color: "#fff",
     fontSize: 16,
+    fontWeight: "bold",
+  },
+  empty: {
+    color: "#aaa",
+    textAlign: "center",
+    marginTop: 40,
   },
   center: {
     flex: 1,

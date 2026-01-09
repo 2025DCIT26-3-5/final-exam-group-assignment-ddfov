@@ -1,18 +1,9 @@
 // Lesson_4.tsx
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from "react-native";
 
-const API_URL =
-  "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
+const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
 
-// Define type for questions
 type Question = {
   type: "fill-in" | "multiple-choice" | "true-false" | "lesson";
   question: string;
@@ -35,12 +26,7 @@ const Lesson_4 = ({ route, navigation }: any) => {
     {
       type: "multiple-choice",
       question: "Which best describes a React Native component?",
-      options: [
-        "A database reusable",
-        "A reusable UI element",
-        "A CSS file",
-        "A backend function",
-      ],
+      options: ["A database reusable", "A reusable UI element", "A CSS file", "A backend function"],
       correctAnswer: "A reusable UI element",
     },
     {
@@ -59,19 +45,19 @@ const Lesson_4 = ({ route, navigation }: any) => {
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<"none" | "correct" | "wrong">(
-    "none"
-  );
+  const [feedback, setFeedback] = useState<"none" | "correct" | "wrong">("none");
 
   const currentQuestion = questions[currentQuestionIndex];
 
-  // Complete lesson
   const markCompleted = async () => {
     try {
       const res = await fetch(`${API_URL}/progress/complete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, lesson_order: 4 }),
+        body: JSON.stringify({ 
+          userId: Number(userId),
+          lesson_order: 4
+        }),
       });
       const data = await res.json();
       if (res.ok) {
@@ -88,9 +74,7 @@ const Lesson_4 = ({ route, navigation }: any) => {
 
   const handleCheck = () => {
     if (!selected) return;
-    setFeedback(
-      selected === currentQuestion.correctAnswer ? "correct" : "wrong"
-    );
+    setFeedback(selected === currentQuestion.correctAnswer ? "correct" : "wrong");
   };
 
   const handleNext = () => {
@@ -107,20 +91,14 @@ const Lesson_4 = ({ route, navigation }: any) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heart}>❤️ 5</Text>
-
       <Text style={styles.question}>{currentQuestion.question}</Text>
 
-      {/* Lesson type: just show text + Continue button */}
       {currentQuestion.type === "lesson" && (
-        <TouchableOpacity
-          style={[styles.checkButton]}
-          onPress={handleNext}
-        >
+        <TouchableOpacity style={styles.checkButton} onPress={handleNext}>
           <Text style={styles.checkText}>Continue</Text>
         </TouchableOpacity>
       )}
 
-      {/* Fill-in type */}
       {currentQuestion.type === "fill-in" && (
         <>
           <View style={styles.snippetBox}>
@@ -137,12 +115,8 @@ const Lesson_4 = ({ route, navigation }: any) => {
                 style={[
                   styles.optionButton,
                   selected === opt && styles.selectedOption,
-                  feedback === "correct" &&
-                    opt === currentQuestion.correctAnswer &&
-                    styles.correctOption,
-                  feedback === "wrong" &&
-                    selected === opt &&
-                    styles.wrongOption,
+                  feedback === "correct" && opt === currentQuestion.correctAnswer && styles.correctOption,
+                  feedback === "wrong" && selected === opt && styles.wrongOption,
                 ]}
                 onPress={() => feedback === "none" && setSelected(opt)}
               >
@@ -153,9 +127,7 @@ const Lesson_4 = ({ route, navigation }: any) => {
         </>
       )}
 
-      {/* Multiple-choice or true-false */}
-      {(currentQuestion.type === "multiple-choice" ||
-        currentQuestion.type === "true-false") && (
+      {(currentQuestion.type === "multiple-choice" || currentQuestion.type === "true-false") && (
         <View style={styles.options}>
           {currentQuestion.options?.map((opt) => (
             <TouchableOpacity
@@ -163,9 +135,7 @@ const Lesson_4 = ({ route, navigation }: any) => {
               style={[
                 styles.optionButton,
                 selected === opt && styles.selectedOption,
-                feedback === "correct" &&
-                  opt === currentQuestion.correctAnswer &&
-                  styles.correctOption,
+                feedback === "correct" && opt === currentQuestion.correctAnswer && styles.correctOption,
                 feedback === "wrong" && selected === opt && styles.wrongOption,
               ]}
               onPress={() => feedback === "none" && setSelected(opt)}
@@ -176,7 +146,6 @@ const Lesson_4 = ({ route, navigation }: any) => {
         </View>
       )}
 
-      {/* Buttons */}
       {currentQuestion.type !== "lesson" && feedback === "none" && (
         <TouchableOpacity
           style={[styles.checkButton, !selected && styles.disabledButton]}
@@ -188,23 +157,15 @@ const Lesson_4 = ({ route, navigation }: any) => {
       )}
 
       {feedback === "correct" && (
-        <TouchableOpacity
-          style={[styles.checkButton, styles.correctButton]}
-          onPress={handleNext}
-        >
+        <TouchableOpacity style={[styles.checkButton, styles.correctButton]} onPress={handleNext}>
           <Text style={styles.checkText}>
-            {currentQuestionIndex < questions.length - 1
-              ? "Next Question"
-              : "Finish Lesson"}
+            {currentQuestionIndex < questions.length - 1 ? "Next Question" : "Finish Lesson"}
           </Text>
         </TouchableOpacity>
       )}
 
       {feedback === "wrong" && (
-        <TouchableOpacity
-          style={[styles.checkButton, styles.wrongButton]}
-          onPress={() => setFeedback("none")}
-        >
+        <TouchableOpacity style={[styles.checkButton, styles.wrongButton]} onPress={() => setFeedback("none")}>
           <Text style={styles.checkText}>Try Again</Text>
         </TouchableOpacity>
       )}
@@ -215,60 +176,19 @@ const Lesson_4 = ({ route, navigation }: any) => {
 export default Lesson_4;
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: "#20232A",
-    padding: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  container: { flexGrow: 1, backgroundColor: "#20232A", padding: 20, alignItems: "center", justifyContent: "center" },
   heart: { fontSize: 20, marginBottom: 10 },
-  question: {
-    color: "#fff",
-    fontSize: 18,
-    marginBottom: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  snippetBox: {
-    backgroundColor: "#fff",
-    width: "100%",
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
+  question: { color: "#fff", fontSize: 18, marginBottom: 20, fontWeight: "bold", textAlign: "center" },
+  snippetBox: { backgroundColor: "#fff", width: "100%", padding: 16, borderRadius: 10, marginBottom: 20 },
   snippet: { fontFamily: "monospace", fontSize: 16, color: "#000" },
-  blank: {
-    backgroundColor: "#eee",
-    paddingHorizontal: 4,
-    borderRadius: 4,
-    fontWeight: "bold",
-  },
-  options: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 10,
-    marginBottom: 20,
-  },
-  optionButton: {
-    backgroundColor: "#2C2F36",
-    padding: 12,
-    borderRadius: 8,
-    margin: 5,
-  },
+  blank: { backgroundColor: "#eee", paddingHorizontal: 4, borderRadius: 4, fontWeight: "bold" },
+  options: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 10, marginBottom: 20 },
+  optionButton: { backgroundColor: "#2C2F36", padding: 12, borderRadius: 8, margin: 5 },
   selectedOption: { borderWidth: 2, borderColor: "#61DAFB" },
   correctOption: { backgroundColor: "green" },
   wrongOption: { backgroundColor: "red" },
   optionText: { color: "#fff", fontWeight: "bold" },
-  checkButton: {
-    backgroundColor: "#61DAFB",
-    padding: 14,
-    borderRadius: 10,
-    width: "50%",
-    alignItems: "center",
-    marginBottom: 10,
-  },
+  checkButton: { backgroundColor: "#61DAFB", padding: 14, borderRadius: 10, width: "50%", alignItems: "center", marginBottom: 10 },
   checkText: { color: "#20232A", fontWeight: "bold" },
   disabledButton: { opacity: 0.5 },
   correctButton: { backgroundColor: "green" },

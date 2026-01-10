@@ -12,75 +12,66 @@ type Question = {
   correctAnswer?: string;
 };
 
-const Lesson_3 = ({ route, navigation }: any) => {
+const Lesson_5 = ({ route, navigation }: any) => {
   const { userId, onComplete } = route.params;
 
   const questions: Question[] = [
     {
       type: "lesson",
-      question: `React native Operations`,
+      question: `React native Buttons and Press`,
     },
     {
       type: "lesson",
-      question: `You know that React Native can perform operations directly inside components, such as updating numbers or text when a button is pressed. However, putting all the logic directly in the UI can make the code harder to read and manage.`,
+      question: `Button and Press, Its like telling a button that when its pressed, do this action`,
     },
     {
       type: "lesson",
-      question: `In this lesson, you'll learn how operations work in React Native, and how state and functions are used to update the app smoothly.Our first example is counting up for each click.`,
-    },
-    {
-      type: "lesson",
-      question: `Next is a simple practice for you in order to understand and learn operations in react native.`,
-    },
-    {
-      type: "fill-in",
-      question: "Fill in the blank \n \n Complete the missing operation so that the number increases by 1 when the button is pressed.",
-      snippet: "import { View, Text, Button } from 'react-native'; \n import { useState } from 'react'; \n function Counter() { \n const [count, setCount] = useState(0); \n  return ( \n<View> \n<Text>Count: {count}</Text> \n<Button \n title='Increase' \n onPress={() => setCount(___)}  \n/> \n </View> \n); \n} ",
-      options: ["count - 1", "count + 1", "count * 1", "count / 1"],
-      correctAnswer: "count + 1",
-    },
-    {
-      type: "lesson",
-      question: `Now to start our practice, we have a 1 set of question in each basic operations. Each question has 2 tries for you to analyze and guess the correct answer.`,
-    },
-    {
-      type: "lesson",
-      question: `Start Quiz`,
-    },
-    {
-      type: "question",
-      question: "Question \n\n If the counter is 6 and the code is:  \n\nWhat is the output after pressing the button once?",
-      snippet: "         onPress={() => setCount(count - 2)} \n\n",
-      options: ["6", "8", "4","2"],
-      correctAnswer: "4",
+      question: `Example: \n\n <Button title='Click me'onPress={() => alert('Hello!')} />`,
     },
     {
       type: "true-false",
-      question: "Pressing the button with the following code decreases the counter by 2 if the initial value is 5:",
-      snippet: "         onPress={() => setCount(count - 2)} \n\n                                    ",
+      question: `Example: Problem \n\n A button must have a 'title' prop.`,
+      options: ["True","False"],
+      correctAnswer: "True",
+    },
+    {
+      type: "lesson",
+      question: `That is only for starter. \n Now to begin our first lesson there are 5 question you will first answer, guess the correct answer based on your understanding from the 1st example`,
+    },
+    {
+      type: "question",
+      question: "Question \n\n Which component is used to create a button in React Native?",
+      options: ["A. Press", "B. Touchable", "C. Button","D. Click"],
+      correctAnswer: "C. Button",
+    },
+    {
+      type: "true-false",
+      question: "The onPress prop is used to handle button press events.",
       options: ["True", "False"],
       correctAnswer: "True",
     },
     {
-      type: "question",
-      question: "Question \n\n If the counter is 10 and the button code is: \n\nWhat will the counter display after one button press?",
-      snippet: "         onPress={() => setCount(count - 2)} \n\n                                    ",
-      options: ["2", "20", "0","5"],
-      correctAnswer: "5",
+      type: "multiple-choice",
+      question: "Question \n\n What happens when the button is pressed? \n\n <Button title='Click Me' onPress={sayHello} />",
+      options: ["A. The button disappears", "B. The 'sayHello' function runs", "C. The app closes","D. Nothing happens"],
+      correctAnswer: "B. The 'sayHello' function runs",
     },
     {
       type: "fill-in",
-      question: "Fill in the blank \n \n Complete the missing part so that the counter doubles each time the button is pressed. \nInitial value: count 4\nOutput should be : count 8",
-      snippet: "          onPress={() => setValue(___)}",
-      options: ["value - 2", "value + 2", "value * 2", "value / 2"],
-      correctAnswer: "value * 2",
+      question: "Fill in the blank \n \n Complete the code to show an alert when the button is pressed:",
+      snippet: "<Button \n title='Press Me' \nonPress={() => ___('Hello')} \n/>",
+      options: ["alert", "console", "log", "none of the above"],
+      correctAnswer: "alert",
     },
     {
-      type: "fill-in",
-      question: "Fill in the blank \n \n Complete the missing part so that the counter resets to 0. \n\nInitial value: count 7\nOutput should be : count 0",
-      snippet: "              onPress={() => setValue(___)}",
-      options: ["count", "count - 1", "0", "null"],
-      correctAnswer: "0",
+      type: "true-false",
+      question: "onClick is used instead of onPress in React Native.",
+      options: ["True", "False"],
+      correctAnswer: "False",
+    },
+    {
+      type: "lesson",
+      question: `That is all for the React native Buttons and Press \n\n Thank You!`,
     },
   ];
 
@@ -98,7 +89,7 @@ const Lesson_3 = ({ route, navigation }: any) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           userId: Number(userId),
-          lesson_order: 3
+          lesson_order: 5
         }),
       });
       const data = await res.json();
@@ -170,12 +161,7 @@ const Lesson_3 = ({ route, navigation }: any) => {
       )}
       {currentQuestion.type === "question" && (
         <>
-          <View style={styles.snippetBox}>
-            <Text style={styles.snippet}>
-              {currentQuestion.snippet?.split("___")[0]}
-              <Text style={styles.blank}></Text>
-            </Text>
-          </View>
+          
           <View style={styles.options}>
             {currentQuestion.options?.map((opt) => (
               <TouchableOpacity
@@ -198,12 +184,7 @@ const Lesson_3 = ({ route, navigation }: any) => {
 
       {(currentQuestion.type === "multiple-choice" || currentQuestion.type === "true-false") && (
         <View style={styles.options}>
-           <View style={styles.snippetBox}>
-            <Text style={styles.snippet}>
-              {currentQuestion.snippet?.split("___")[0]}
-              <Text style={styles.blank}></Text>
-            </Text>
-          </View>
+           
           {currentQuestion.options?.map((opt) => (
             <TouchableOpacity
               key={opt}
@@ -270,7 +251,7 @@ const Lesson_3 = ({ route, navigation }: any) => {
   );
 };
 
-export default Lesson_3;
+export default Lesson_5;
 
 const styles = StyleSheet.create({
   container: { flexGrow: 1, backgroundColor: "#20232A", padding: 20, alignItems: "center", justifyContent: "center" },

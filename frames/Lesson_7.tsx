@@ -1,8 +1,16 @@
 // Lesson_7.tsx
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+} from "react-native";
 
-const API_URL = "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
+const API_URL =
+  "https://glowing-space-carnival-4jgp45wjj6542qr9r-3000.app.github.dev";
 
 type Question = {
   type: "fill-in" | "multiple-choice" | "true-false" | "lesson";
@@ -17,35 +25,103 @@ const Lesson_7 = ({ route, navigation }: any) => {
 
   const questions: Question[] = [
     {
-      type: "fill-in",
-      question: "Complete the StyleSheet:",
-      snippet: "container: {\n  flexDirection: ___\n}",
-      options: ["row", "column", "row-reverse", "column-reverse"],
-      correctAnswer: "row",
-    },
-    {
-      type: "multiple-choice",
-      question: "Which best describes a React Native component?",
-      options: ["A database reusable", "A reusable UI element", "A CSS file", "A backend function"],
-      correctAnswer: "A reusable UI element",
-    },
-    {
-      type: "true-false",
-      question: "React Native uses JavaScript as its programming language.",
-      options: ["True", "False"],
-      correctAnswer: "True",
+      type: "lesson",
+      question: `ScrollView`,
     },
     {
       type: "lesson",
-      question: `You know that React Native can perform operations directly inside components, 
-      such as updating numbers or text when a button is pressed. However, putting all the logic 
-      directly in the UI can make the code harder to read and manage.`,
+      question: `In this lesson, you will learn how to scroll content using ScrollView.`,
+    },
+    {
+      type: "lesson",
+      question: `Before starting the quiz, let’s look at some examples of ScrollView.`,
+    },
+
+    {
+      type: "fill-in",
+      question: "<ScrollView> makes content scrollable.",
+      snippet: "<___>\n <Text>Item</Text>\n</ScrollView>",
+      options: ["ScrollView", "View"],
+      correctAnswer: "ScrollView",
+    },
+
+    {
+      type: "fill-in",
+      question: "horizontal enables left-right scrolling.",
+      snippet: "<ScrollView ___={true}>",
+      options: ["horizontal", "style"],
+      correctAnswer: "horizontal",
+    },
+
+    {
+      type: "fill-in",
+      question: "ScrollView can contain multiple children.",
+      snippet: "<ScrollView>\n <___>Item</Text>\n</ScrollView>",
+      options: ["Text", "Image"],
+      correctAnswer: "Text",
+    },
+
+    {
+      type: "lesson",
+      question: `Great! You’ve learned how ScrollView works.\n\nLet’s start the quiz to test your knowledge!`,
+    },
+
+    {
+      type: "fill-in",
+      question: "Complete the scroll container:",
+      snippet: "<___>\n <Text>Content</Text>\n</ScrollView>",
+      options: ["ScrollView", "View"],
+      correctAnswer: "ScrollView",
+    },
+
+    {
+      type: "true-false",
+      question: "ScrollView can scroll vertically by default.",
+      options: ["True", "False"],
+      correctAnswer: "True",
+    },
+
+    {
+      type: "true-false",
+      question: "ScrollView supports horizontal scrolling.",
+      options: ["True", "False"],
+      correctAnswer: "True",
+    },
+
+    {
+      type: "true-false",
+      question: "ScrollView can only contain Text components.",
+      options: ["True", "False"],
+      correctAnswer: "False",
+    },
+
+    {
+      type: "multiple-choice",
+      question: "Which component allows scrolling?",
+      options: ["View", "ScrollView", "Text", "Image"],
+      correctAnswer: "ScrollView",
+    },
+
+    {
+      type: "multiple-choice",
+      question: "Which prop enables horizontal scrolling?",
+      options: ["flex", "horizontal", "style", "alignItems"],
+      correctAnswer: "horizontal",
+    },
+
+    {
+      type: "multiple-choice",
+      question: "Which component can be inside ScrollView?",
+      options: ["Text", "View", "Image", "All of the above"],
+      correctAnswer: "All of the above",
     },
   ];
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
-  const [feedback, setFeedback] = useState<"none" | "correct" | "wrong">("none");
+  const [feedback, setFeedback] = useState<"none" | "correct" | "wrong">(
+    "none"
+  );
   const [hearts, setHearts] = useState(5);
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -55,9 +131,9 @@ const Lesson_7 = ({ route, navigation }: any) => {
       const res = await fetch(`${API_URL}/progress/complete`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           userId: Number(userId),
-          lesson_order: 7
+          lesson_order: 7,
         }),
       });
       const data = await res.json();
@@ -75,7 +151,9 @@ const Lesson_7 = ({ route, navigation }: any) => {
 
   const handleCheck = () => {
     if (!selected) return;
-    setFeedback(selected === currentQuestion.correctAnswer ? "correct" : "wrong");
+    setFeedback(
+      selected === currentQuestion.correctAnswer ? "correct" : "wrong"
+    );
   };
 
   const handleNext = () => {
@@ -116,8 +194,12 @@ const Lesson_7 = ({ route, navigation }: any) => {
                 style={[
                   styles.optionButton,
                   selected === opt && styles.selectedOption,
-                  feedback === "correct" && opt === currentQuestion.correctAnswer && styles.correctOption,
-                  feedback === "wrong" && selected === opt && styles.wrongOption,
+                  feedback === "correct" &&
+                    opt === currentQuestion.correctAnswer &&
+                    styles.correctOption,
+                  feedback === "wrong" &&
+                    selected === opt &&
+                    styles.wrongOption,
                 ]}
                 onPress={() => feedback === "none" && setSelected(opt)}
               >
@@ -128,7 +210,8 @@ const Lesson_7 = ({ route, navigation }: any) => {
         </>
       )}
 
-      {(currentQuestion.type === "multiple-choice" || currentQuestion.type === "true-false") && (
+      {(currentQuestion.type === "multiple-choice" ||
+        currentQuestion.type === "true-false") && (
         <View style={styles.options}>
           {currentQuestion.options?.map((opt) => (
             <TouchableOpacity
@@ -136,7 +219,9 @@ const Lesson_7 = ({ route, navigation }: any) => {
               style={[
                 styles.optionButton,
                 selected === opt && styles.selectedOption,
-                feedback === "correct" && opt === currentQuestion.correctAnswer && styles.correctOption,
+                feedback === "correct" &&
+                  opt === currentQuestion.correctAnswer &&
+                  styles.correctOption,
                 feedback === "wrong" && selected === opt && styles.wrongOption,
               ]}
               onPress={() => feedback === "none" && setSelected(opt)}
@@ -158,9 +243,14 @@ const Lesson_7 = ({ route, navigation }: any) => {
       )}
 
       {feedback === "correct" && (
-        <TouchableOpacity style={[styles.checkButton, styles.correctButton]} onPress={handleNext}>
+        <TouchableOpacity
+          style={[styles.checkButton, styles.correctButton]}
+          onPress={handleNext}
+        >
           <Text style={styles.checkText}>
-            {currentQuestionIndex < questions.length - 1 ? "Next Question" : "Finish Lesson"}
+            {currentQuestionIndex < questions.length - 1
+              ? "Next Question"
+              : "Finish Lesson"}
           </Text>
         </TouchableOpacity>
       )}
@@ -171,17 +261,21 @@ const Lesson_7 = ({ route, navigation }: any) => {
           onPress={() => {
             const newHearts = hearts - 1;
             if (newHearts <= 0) {
-              Alert.alert("Out of hearts!", "You reached 0 hearts. Restarting the lesson.", [
-                {
-                  text: "OK",
-                  onPress: () => {
-                    setCurrentQuestionIndex(0);
-                    setSelected(null);
-                    setFeedback("none");
-                    setHearts(5); // reset hearts
+              Alert.alert(
+                "Out of hearts!",
+                "You reached 0 hearts. Restarting the lesson.",
+                [
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      setCurrentQuestionIndex(0);
+                      setSelected(null);
+                      setFeedback("none");
+                      setHearts(5); // reset hearts
+                    },
                   },
-                },
-              ]);
+                ]
+              );
             } else {
               setHearts(newHearts);
               setFeedback("none");
@@ -199,19 +293,60 @@ const Lesson_7 = ({ route, navigation }: any) => {
 export default Lesson_7;
 
 const styles = StyleSheet.create({
-  container: { flexGrow: 1, backgroundColor: "#20232A", padding: 20, alignItems: "center", justifyContent: "center" },
+  container: {
+    flexGrow: 1,
+    backgroundColor: "#20232A",
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   heart: { fontSize: 20, marginBottom: 10 },
-  question: { color: "#fff", fontSize: 18, marginBottom: 20, fontWeight: "bold", textAlign: "center" },
-  snippetBox: { backgroundColor: "#fff", width: "100%", padding: 16, borderRadius: 10, marginBottom: 20 },
+  question: {
+    color: "#fff",
+    fontSize: 18,
+    marginBottom: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  snippetBox: {
+    backgroundColor: "#fff",
+    width: "100%",
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
   snippet: { fontFamily: "monospace", fontSize: 16, color: "#000" },
-  blank: { backgroundColor: "#eee", paddingHorizontal: 4, borderRadius: 4, fontWeight: "bold" },
-  options: { flexDirection: "row", flexWrap: "wrap", justifyContent: "center", gap: 10, marginBottom: 20 },
-  optionButton: { backgroundColor: "#2C2F36", padding: 12, borderRadius: 8, margin: 5 },
+  blank: {
+    backgroundColor: "#eee",
+    paddingHorizontal: 4,
+    borderRadius: 4,
+    fontWeight: "bold",
+  },
+  options: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: 10,
+    marginBottom: 20,
+  },
+  optionButton: {
+    backgroundColor: "#2C2F36",
+    padding: 12,
+    borderRadius: 8,
+    margin: 5,
+  },
   selectedOption: { borderWidth: 2, borderColor: "#61DAFB" },
   correctOption: { backgroundColor: "green" },
   wrongOption: { backgroundColor: "red" },
   optionText: { color: "#fff", fontWeight: "bold" },
-  checkButton: { backgroundColor: "#61DAFB", padding: 14, borderRadius: 10, width: "50%", alignItems: "center", marginBottom: 10 },
+  checkButton: {
+    backgroundColor: "#61DAFB",
+    padding: 14,
+    borderRadius: 10,
+    width: "50%",
+    alignItems: "center",
+    marginBottom: 10,
+  },
   checkText: { color: "#20232A", fontWeight: "bold" },
   disabledButton: { opacity: 0.5 },
   correctButton: { backgroundColor: "green" },

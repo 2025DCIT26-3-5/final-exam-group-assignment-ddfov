@@ -18,7 +18,7 @@ const Lesson_5 = ({ route, navigation }: any) => {
   const questions: Question[] = [
     {
       type: "lesson",
-      question: `React native Buttons and Press`,
+      question: `Buttons and Press`,
     },
     {
       type: "lesson",

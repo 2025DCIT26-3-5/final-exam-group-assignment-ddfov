@@ -1,63 +1,96 @@
-import { useState } from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+// App.tsx
+import React from "react";
+import { View, Text, StyleSheet, Pressable, Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-// Child Component with Props
-function Greeting({ name }) {
-  return <Text style={styles.greeting}>Kamote, {name}!</Text>;
-}
+import Info from "./frames/Info";
+import Signin from "./frames/Signin";
+import Dashboard from "./frames/Dashboard";
 
-export default function App() {
-  // State Hook
-  const [count, setCount] = useState(0);
-  const [name, setName] = useState("World");
+// Lesson screens
+import Lesson_1 from "./frames/Lesson_1";
+import Lesson_2 from "./frames/Lesson_2";
+import Lesson_3 from "./frames/Lesson_3";
+import Lesson_4 from "./frames/Lesson_4";
+import Lesson_5 from "./frames/Lesson_5";
+import Lesson_6 from "./frames/Lesson_6";
+import Lesson_7 from "./frames/Lesson_7";
+import Lesson_8 from "./frames/Lesson_8";
+import Lesson_9 from "./frames/Lesson_9";
+import Lesson_10 from "./frames/Lesson_10";
 
+const Stack = createNativeStackNavigator();
+
+// STARTUP SCREEN
+function Startup({ navigation }: any) {
   return (
     <View style={styles.container}>
-      {/* Native Feature: Controls phone's status bar */}
-      <StatusBar style="light" backgroundColor="red" />
-
-      <Text style={styles.title}>React Native Demo</Text>
-
-      {/* Component with Props */}
-      <Greeting name={name} />
-
-      {/* State Display */}
-      <Text style={styles.counter}>Count: {count}</Text>
-
-      {/* Native Button */}
-      <Button title="Increment" onPress={() => setCount(count + 1)} />
-
-      <Button
-        title="Change Name"
-        onPress={() => setName(name === "World" ? "Student" : "World")}
+      <StatusBar style="light" />
+      <Image
+        source={require("./images/Logo.png")}
+        style={styles.logoImage}
+        resizeMode="contain"
       />
+      <Pressable
+        style={styles.button}
+        onPress={() => navigation.navigate("Info")}
+      >
+        <Text style={styles.buttonText}>Continue</Text>
+      </Pressable>
     </View>
   );
 }
 
-// StyleSheet (like CSS but for React Native)
+// APP ENTRY POINT
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Startup" component={Startup} />
+        <Stack.Screen name="Info" component={Info} />
+        <Stack.Screen name="Signin" component={Signin} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
+        <Stack.Screen name="Lesson_1" component={Lesson_1} />
+        <Stack.Screen name="Lesson_2" component={Lesson_2} />
+        <Stack.Screen name="Lesson_3" component={Lesson_3} />
+        <Stack.Screen name="Lesson_4" component={Lesson_4} />
+        <Stack.Screen name="Lesson_5" component={Lesson_5} />
+        <Stack.Screen name="Lesson_6" component={Lesson_6} />
+        <Stack.Screen name="Lesson_7" component={Lesson_7} />
+        <Stack.Screen name="Lesson_8" component={Lesson_8} />
+        <Stack.Screen name="Lesson_9" component={Lesson_9} />
+        <Stack.Screen name="Lesson_10" component={Lesson_10} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
+// STYLES
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#cbd4e6ff",
+    backgroundColor: "#20232A",
     alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
+  logoImage: {
+    width: 500,
+    height: 500,
     marginBottom: 20,
   },
-  greeting: {
-    fontSize: 32,
-    color: "#ec261cff",
-    marginBottom: 10,
+  button: {
+    position: "absolute",
+    bottom: 60,
+    backgroundColor: "#61DAFB",
+    paddingVertical: 14,
+    paddingHorizontal: 70,
+    borderRadius: 30,
   },
-  counter: {
+  buttonText: {
+    color: "#FFFFFF",
     fontSize: 16,
-    color: "white",
-    marginVertical: 20,
+    fontWeight: "bold",
   },
 });

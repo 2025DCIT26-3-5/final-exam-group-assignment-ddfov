@@ -14,6 +14,7 @@ import Lesson_1 from "./frames/Lesson_1";
 import Lesson_2 from "./frames/Lesson_2";
 import Lesson_3 from "./frames/Lesson_3";
 import Lesson_4 from "./frames/Lesson_4";
+import Lesson_6 from "./frames/Lesson_6";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,7 @@ export default function App() {
         <Stack.Screen name="Lesson_2" component={Lesson_2} />
         <Stack.Screen name="Lesson_3" component={Lesson_3} />
         <Stack.Screen name="Lesson_4" component={Lesson_4} />
+        <Stack.Screen name="Lesson_6" component={Lesson_6} />
       </Stack.Navigator>
     </NavigationContainer>
   );

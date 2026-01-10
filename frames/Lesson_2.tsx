@@ -17,29 +17,131 @@ const Lesson_2 = ({ route, navigation }: any) => {
 
   const questions: Question[] = [
     {
-      type: "fill-in",
-      question: "Complete the StyleSheet:",
-      snippet: "container: {\n  flexDirection: ___\n}",
-      options: ["row", "column", "row-reverse", "column-reverse"],
-      correctAnswer: "row",
+      type: "lesson",
+      question: `What is Components? \n\n- A component is a reusable piece of UI. In React Native, everything you see on the screen is a component (Text, View, Button, or your own custom ones).`,
     },
+
+    {
+      type: "lesson",
+      question: `Example: \n\nfunction Hello() { \n  return <Text>Hello World</Text>; \n}`,
+    },
+
+    {
+      type: "lesson",
+      question: `What is Props? \n\n- Props (properties) are used to pass data from a parent component to a child component. Props are read-only — you do not modify them inside the component.`,
+    },
+
+    {
+      type: "lesson",
+      question: `Example: \n\nfunction Greeting(props) { \n  return <Text>Hello {props.name}</Text>; \n}`,
+    },
+
+    {
+      type: "lesson",
+      question: `Usage: \n\n<Greeting name="Juan" />`,
+    },
+
+    //Question 1
+    {
+      type: "fill-in",
+      question: "Fill in the blank:",
+      snippet: "container: { A ___ is a reusable piece of UI in React Native.}",
+      options: ["table", "props", "component", "variable"],
+      correctAnswer: "component",
+    },
+
+    //Question 2
+    {
+      type: "fill-in",
+      question: "Complete the code to display text:",
+      snippet:
+        "container: { <View> \n  <___>Hello React Native</Text> \n</View>}",
+      options: ["Text", "h1", "print", "script"],
+      correctAnswer: "Text",
+    },
+
+    //Question 3
     {
       type: "multiple-choice",
       question: "Which best describes a React Native component?",
-      options: ["A database reusable", "A reusable UI element", "A CSS file", "A backend function"],
+      options: [
+        "A database table",
+        "A reusable UI element",
+        "A CSS file",
+        "A backend function",
+      ],
       correctAnswer: "A reusable UI element",
     },
+
+    //Question 4
     {
       type: "true-false",
-      question: "React Native uses JavaScript as its programming language.",
+      question: "A component can work even if it does not receive any props.",
       options: ["True", "False"],
       correctAnswer: "True",
     },
+
+    //Question 5
     {
-      type: "lesson",
-      question: `You know that React Native can perform operations directly inside components, 
-      such as updating numbers or text when a button is pressed. However, putting all the logic 
-      directly in the UI can make the code harder to read and manage.`,
+      type: "multiple-choice",
+      question: "Which code correctly defines a functional component?",
+      options: [
+        "<Text>Hello</Text>",
+        "function Hello() {\n  return <Text>Hello</Text>; \n}",
+        'const Hello = "Hello";',
+        'View("Hello");',
+      ],
+      correctAnswer: "function Hello() {\n  return <Text>Hello</Text>; \n}",
+    },
+
+    //Question 6
+    {
+      type: "fill-in",
+      question: "Fill in the blank",
+      snippet: "container: { Props are passed to a component as a ___}",
+      options: ["loop", "variable", "function", "parameter"],
+      correctAnswer: "parameter",
+    },
+
+    //Question 7
+    {
+      type: "true-false",
+      question:
+        "Props are used to pass data from parent components to child components.",
+      options: ["True", "False"],
+      correctAnswer: "True",
+    },
+
+    //Question 8
+    {
+      type: "multiple-choice",
+      question: "How do you pass a prop called title?",
+      options: [
+        "<Header title />",
+        '<Header "title" />',
+        '<Header title="Home" />',
+        '<Header = title="Home" />',
+      ],
+      correctAnswer: '<Header title="Home" />',
+    },
+
+    //Question 9
+    {
+      type: "true-false",
+      question:
+        "Props can be modified inside the component that receives them.",
+      options: ["True", "False"],
+      correctAnswer: "False",
+    },
+
+    //Question 10
+    {
+      type: "fill-in",
+      question: "Fill in the missing word:",
+      snippet:
+        "container: { function Greeting(props) {\n  return <Text>{props.___}</Text>; \n}}",
+      options: ["title", "name", "component", "const"],
+      correctAnswer: "name",
     },
   ];
 

@@ -26,102 +26,131 @@ const Lesson_10 = ({ route, navigation }: any) => {
   const questions: Question[] = [
     {
       type: "lesson",
-      question: "useState",
-    },
-    {
-      type: "lesson",
-      question:
-        "In this lesson, you will learn how to use useState to manage state in React Native.",
-    },
-    {
-      type: "lesson",
-      question:
-        "Before starting the quiz, let’s look at some examples of useState.",
-    },
-
-    {
-      type: "fill-in",
-      question: "useState is a React Hook.",
-      snippet: "const [count, setCount] = ___(0);",
-      options: ["useState", "useEffect"],
-      correctAnswer: "useState",
-    },
-
-    {
-      type: "fill-in",
-      question: "The first value is the state variable.",
-      snippet: "const [___, setName] = useState('John');",
-      options: ["name", "Name"],
-      correctAnswer: "name",
-    },
-
-    {
-      type: "fill-in",
-      question: "The second value is the function to update the state.",
-      snippet: "const [age, ___] = useState(18);",
-      options: ["setAge", "age"],
-      correctAnswer: "setAge",
+      question: `What List in React Native? \n\n- A list is just multiple items stored in an array.`,
     },
 
     {
       type: "lesson",
-      question:
-        "Great! You’ve learned how useState works.\n\nLet’s start the quiz to test your knowledge!",
+      question: `Example: \n\nconst fruits = ["Apple", "Banana", "Orange"];`,
     },
 
     {
-      type: "fill-in",
-      question: "Complete the useState syntax:",
-      snippet: "const [value, ___] = useState(0);",
-      options: ["setValue", "value"],
-      correctAnswer: "setValue",
+      type: "lesson",
+      question: `What is Map? \n\n- map() is a JavaScript function that: \n\n• loops through a list (array) \n• returns a new array \n• lets you display something for each item \n\nIn React Native, we use map() to turn data into UI.`,
     },
 
+    {
+      type: "lesson",
+      question: `Example: \n\nreturn (
+    <View>
+      {fruits.map((fruit) => (
+        <Text key={fruit}>{fruit}</Text>
+      ))}
+    </View>
+  );;`,
+    },
+
+    {
+      type: "lesson",
+      question: `What is happening here? \n\n1. fruits.map() loops through the list \n2. Each fruit becomes a <Text> component \n3.React Native displays all items on the screen`,
+    },
+
+    //Question 1
+    {
+      type: "fill-in",
+      question: "Fill in the blank:",
+      snippet:
+        "container: { The map() function is used to ___ over an array and return a new array.}",
+      options: ["loop", "used", "declare", "jump"],
+      correctAnswer: "loop",
+    },
+
+    //Question 2
+    {
+      type: "fill-in",
+      question: "Fill in the missing word:",
+      snippet:
+        "container: { items.___((item) => ( \n <Text>{item}</Text> \n))}",
+      options: ["const", "map", "add", "return"],
+      correctAnswer: "map",
+    },
+
+    //Question 3
+    {
+      type: "multiple-choice",
+      question: "What does map() return?",
+      options: ["A single value", "A new array", "A boolean", "Nothing"],
+      correctAnswer: "A new array",
+    },
+
+    //Question 4
     {
       type: "true-false",
-      question: "useState is used to store data in a component.",
+      question:
+        "The map() function can be used to render components in React Native.",
       options: ["True", "False"],
       correctAnswer: "True",
     },
 
+    //Question 5
+    {
+      type: "multiple-choice",
+      question: "Which code correctly renders a list of items?",
+      options: [
+        "items.forEach(item => <Text>{item}</Text>)",
+        "items.map(item => { \n <Text>{item}</Text> \n})",
+        "items.map(item => ( \n <Text key={item}>{item}</Text> \n))",
+        "<Text>{items}</Text>",
+      ],
+      correctAnswer:
+        "items.map(item => ( \n <Text key={item}>{item}</Text> \n))",
+    },
+
+    //Question 6
+    {
+      type: "fill-in",
+      question: "Fill in the blank",
+      snippet:
+        "container: { When rendering a list, each item should have a unique ___.",
+      options: ["items", "variable", "key", "parameter"],
+      correctAnswer: "key",
+    },
+
+    //Question 7
     {
       type: "true-false",
-      question: "useState can only store numbers.",
+      question: "Using map() directly inside JSX is allowed.",
+      options: ["True", "False"],
+      correctAnswer: "True",
+    },
+
+    //Question 8
+    {
+      type: "multiple-choice",
+      question: "Why is the key prop important when rendering lists?",
+      options: [
+        "For styling",
+        "For navigation",
+        "To help React identify list items",
+        "To store data",
+      ],
+      correctAnswer: "To help React identify list items",
+    },
+
+    //Question 9
+    {
+      type: "true-false",
+      question: "map() modifies the original array.",
       options: ["True", "False"],
       correctAnswer: "False",
     },
 
+    //Question 10
     {
       type: "true-false",
-      question: "Changing state will re-render the component.",
+      question: "FlatList is recommended for long lists instead of map().",
       options: ["True", "False"],
       correctAnswer: "True",
-    },
-
-    {
-      type: "multiple-choice",
-      question: "Which hook is used for state?",
-      options: ["useEffect", "useState", "useRef", "useMemo"],
-      correctAnswer: "useState",
-    },
-
-    {
-      type: "multiple-choice",
-      question: "What does useState return?",
-      options: [
-        "A variable only",
-        "A function only",
-        "A state and a function",
-        "A component",
-      ],
-      correctAnswer: "A state and a function",
-    },
-
-    {
-      type: "multiple-choice",
-      question: "Which function updates the state?",
-      options: ["state", "setState", "setter", "setValue"],
-      correctAnswer: "setValue",
     },
   ];
 
